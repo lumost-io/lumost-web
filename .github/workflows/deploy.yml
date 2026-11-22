@@ -34,7 +34,10 @@ jobs:
           PUBLIC_FORM_ENDPOINT: ${{ vars.PUBLIC_FORM_ENDPOINT }}
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: dist
+          # The cloudflare adapter writes the static site to dist/client and a server
+          # bundle to dist/server. Pages only serves the former; uploading plain `dist`
+          # nested everything under client/ and the whole domain answered 404.
+          path: dist/client
 
   deploy:
     needs: build
