@@ -1,0 +1,82 @@
+---
+import type { Dict } from '../i18n/id';
+import { site } from '../site';
+
+interface Props { t: Dict }
+const { t } = Astro.props;
+const f = t.contact.form;
+const config = JSON.stringify({
+  endpoint: site.formEndpoint ?? '',
+  mailto: site.founder.email,
+  subject: f.subject,
+  sending: f.sending, sent: f.sent, error: f.error, hint: f.mailtoHint,
+  labels: { name: f.name, email: f.email, company: f.company, hosts: f.hosts, message: f.message },
+});
+---
+<form class="lead" id="lead" novalidate data-config={config}>
+  <div class="two">
+    <div class="field">
+      <label for="f-name">{f.name}<i>{f.required}</i></label>
+      <input id="f-name" name="name" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="f-email">{f.email}<i>{f.required}</i></label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required />
+    </div>
+  </div>
+  <div class="two">
+    <div class="field">
+      <label for="f-company">{f.company}</label>
+      <input id="f-company" name="company" autocomplete="organization" />
+    </div>
+    <div class="field">
+      <label for="f-hosts">{f.hosts}</label>
+      <select id="f-hosts" name="hosts">{f.hostOptions.map((o) => <option value={o}>{o}</option>)}</select>
+    </div>
+  </div>
+  <div class="field">
+    <label for="f-message">{f.message}</label>
+    <textarea id="f-message" name="message" placeholder={f.messagePlaceholder}></textarea>
+  </div>
+  <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+  <button class="btn primary" type="submit">{f.submit}</button>
+  <p class="status" role="status" aria-live="polite"></p>
+  {!site.formEndpoint && <p class="hint">{f.mailtoHint}</p>}
+</form>
+
+<script>
+  const form = document.getElementById('lead') as HTMLFormElement | null;
+  if (form) {
+    const cfg = JSON.parse(form.dataset.config ?? '{}');
+    const status = form.querySelector<HTMLElement>('.status')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const say = (msg: string, kind: '' | 'ok' | 'err' = '') => { status.textContent = msg; status.className = `status ${kind}`.trim(); };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      if (data.website) return; // honeypot: bots fill it, people never see it
+
+      if (cfg.endpoint) {
+        submit.disabled = true; say(cfg.sending);
+        try {
+          const res = await fetch(cfg.endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ name: data.name, email: data.email, company: data.company, hosts: data.hosts, message: data.message }),
+          });
+          if (!res.ok) throw new Error(String(res.status));
+          form.reset(); say(cfg.sent, 'ok');
+        } catch { say(cfg.error, 'err'); }
+        finally { submit.disabled = false; }
+        return;
+      }
+
+      const L = cfg.labels;
+      const body = [`${L.name}: ${data.name}`, `${L.email}: ${data.email}`, `${L.company}: ${data.company || '-'}`, `${L.hosts}: ${data.hosts}`, '', data.message || ''].join('\n');
+      window.location.href = `mailto:${cfg.mailto}?subject=${encodeURIComponent(cfg.subject)}&body=${encodeURIComponent(body)}`;
+      say(cfg.hint);
+    });
+  }
+</script>

@@ -1,0 +1,14 @@
+name = "lumost-contact"
+main = "index.js"
+compatibility_date = "2026-11-01"
+
+# Public config. Secrets are not here — set them with:
+#   npx wrangler secret put RESEND_API_KEY
+[vars]
+TO = "hasan@alimna.id"
+# FROM must sit on the domain verified in Resend — that is alimna.id (root).
+# mail.alimna.id is only a CNAME to send.forge.rmta.net and is NOT a verified sending domain.
+# hasan@ is the only real mailbox on the domain, so it is the sender too; replies still go to the
+# enquirer via reply_to. Create a halo@ alias (or verify lumost.id) to drop the self-addressed send.
+FROM = "Lumost <hasan@alimna.id>"
+ALLOWED_ORIGINS = "https://lumost.id,https://www.lumost.id"
