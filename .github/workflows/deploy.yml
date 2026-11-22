@@ -32,6 +32,7 @@ jobs:
           # Set this as a repository variable (Settings → Secrets and variables → Actions → Variables)
           # to make the contact form POST in-page. Unset, the form falls back to mailto:.
           PUBLIC_FORM_ENDPOINT: ${{ vars.PUBLIC_FORM_ENDPOINT }}
+      - run: rm -f dist/client/wrangler.json dist/client/_headers   # cloudflare-only files, not for the public site
       - uses: actions/upload-pages-artifact@v5
         with:
           # The cloudflare adapter writes the static site to dist/client and a server
