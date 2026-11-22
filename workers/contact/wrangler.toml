@@ -2,6 +2,11 @@ name = "lumost-contact"
 main = "index.js"
 compatibility_date = "2026-11-01"
 
+# Serve the relay on our own hostname (the zone lumost.id is on Cloudflare, so wrangler
+# creates the DNS record and certificate). The page keeps posting json cross-origin to this
+# host, so ALLOWED_ORIGINS below still matters.
+routes = [{ pattern = "contact.lumost.id", custom_domain = true }]
+
 # Public config. Secrets are not here — set them with:
 #   npx wrangler secret put RESEND_API_KEY
 [vars]

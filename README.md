@@ -45,16 +45,20 @@ server-side, `reply_to` set to the enquirer, and only `https://lumost.id` / `htt
 cd workers/contact
 node test.mjs                 # 8 groups, no network, no secrets
 npx wrangler secret put RESEND_API_KEY
-npx wrangler deploy           # prints https://lumost-contact.<account>.workers.dev
+# deploy from the repo root, with an explicit config: wrangler walks up and finds the
+# adapter's wrangler.jsonc otherwise, silently deploying the *site* Worker instead.
+cd ../.. && npx wrangler deploy --config workers/contact/wrangler.toml
 ```
 
-Then set `PUBLIC_FORM_ENDPOINT` to that Worker URL (locally in `.env`, on Pages as a repository variable) and rebuild.
+`wrangler.toml` binds the relay to `contact.lumost.id` (`routes` + `custom_domain = true`), which works because
+`lumost.id` is an active zone on the same Cloudflare account. Wrangler creates the DNS record and certificate itself.
+Binding a custom domain disables `workers.dev` for that Worker, so `https://lumost-contact.<account>.workers.dev` stops
+answering once this is deployed — the custom domain is the address.
 
-The value is the Worker's own origin, `https://lumost-contact.<account>.workers.dev` — not `lumost.id`. The site itself is
-static: `POST` to it is answered `405`, so a same-site value only produces the error message. A custom hostname such as
-`contact.lumost.id` would need `lumost.id` to be an active zone in Cloudflare (`routes` + `custom_domain = true` in
-`wrangler.toml`); today its nameservers are Domainesia, so the `workers.dev` URL is the path of least resistance.
-`ALLOWED_ORIGINS` stays `https://lumost.id,https://www.lumost.id` either way — it matches the page, not the endpoint.
+Then set `PUBLIC_FORM_ENDPOINT` to `https://contact.lumost.id` (locally in `.env`, on Pages as a repository variable) and
+rebuild. Never point it at `lumost.id`: the site is static, so `POST` to it is answered `405`, and the form shows its
+error line. `ALLOWED_ORIGINS` stays `https://lumost.id,https://www.lumost.id` — it matches the page that sends, not the
+endpoint that receives.
 
 Resend has `alimna.id` verified (the root domain) and `hasan@alimna.id` is the only real mailbox on it, so `FROM` is
 `Lumost <hasan@alimna.id>` — the display name carries the brand and `reply_to` sends answers back to the enquirer, never
