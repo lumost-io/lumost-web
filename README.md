@@ -50,6 +50,12 @@ npx wrangler deploy           # prints https://lumost-contact.<account>.workers.
 
 Then set `PUBLIC_FORM_ENDPOINT` to that Worker URL (locally in `.env`, on Pages as a repository variable) and rebuild.
 
+The value is the Worker's own origin, `https://lumost-contact.<account>.workers.dev` — not `lumost.id`. The site itself is
+static: `POST` to it is answered `405`, so a same-site value only produces the error message. A custom hostname such as
+`contact.lumost.id` would need `lumost.id` to be an active zone in Cloudflare (`routes` + `custom_domain = true` in
+`wrangler.toml`); today its nameservers are Domainesia, so the `workers.dev` URL is the path of least resistance.
+`ALLOWED_ORIGINS` stays `https://lumost.id,https://www.lumost.id` either way — it matches the page, not the endpoint.
+
 Resend has `alimna.id` verified (the root domain) and `hasan@alimna.id` is the only real mailbox on it, so `FROM` is
 `Lumost <hasan@alimna.id>` — the display name carries the brand and `reply_to` sends answers back to the enquirer, never
 to us. One consequence: notifications arrive from the same address they are delivered to, which some filters treat as
