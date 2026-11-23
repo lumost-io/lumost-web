@@ -59,6 +59,10 @@ export const id = {
       { t: 'Akses tercatat', d: 'Akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi mana.' },
       { t: 'Rupiah, per host', d: 'Faktur dalam rupiah dengan PPN, dan tagihan dihitung per host, bukan per span atau per GB.' },
     ],
+    compliance: {
+      title: 'Selaras dengan UU PDP 27/2022 dan PP 33/2026.',
+      text: 'Karena data observability Anda tetap di Indonesia, tidak ada transfer data pribadi ke luar negeri yang perlu dilengkapi instrumen hukum. Kami menandatangani DPA, melaporkan insiden kepada Anda paling lambat 3×24 jam, membantu permintaan hak subjek data dalam 3×24 jam, dan memusnahkan data sesuai masa retensi.',
+    },
   },
   partner: {
     kicker: 'Tim pertama',
