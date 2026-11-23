@@ -2,8 +2,9 @@
 
 Landing page for [lumost.id](https://lumost.id) — Astro, fully static, one page, Bahasa Indonesia only.
 
-Sections: hero (real screenshot) · four signals · product tour (six tabs, CSS-only) · how it works · data handling ·
-a short design-partner strip · contact (form, WhatsApp, email). No prices: the pricing conversation happens in the demo.
+Sections: hero (countdown + archipelago dot map) · four signals · 01 product tour (six tabs, CSS-only) ·
+02 data sovereignty (countdown · transfer diagram · 8-cell facts grid) · 03 how it works · 04 comparison · 05 design-partner strip · contact (form, WhatsApp, email). No prices: the pricing
+conversation happens in the demo.
 
 ## Run
 
@@ -75,18 +76,49 @@ That stops naive bots only — add Cloudflare Turnstile if the page starts attra
 
 ## Deliberately not on the page
 
-- **No prices, and competitor names only as a cost contrast.** Datadog and Grafana Cloud appear once in the hero as the expensive alternative to a cheaper per-host bill; there are no price figures and no feature comparison.
+- **No prices.** The comparison at `#perbandingan` has billing *models*, not figures; numbers live in the demo deck.
+- **Competitor claims are dated, not permanent.** The table's regions, billing models and query languages were checked
+  against public vendor documentation on 22 November 2026 (sources in
+  `../dinoculars-frontend/aidlc-docs/proposal/references.md`, sections C–D) and the page says so. Grafana Cloud does have
+  a Jakarta region (AWS `ap-southeast-3`), so the page discloses it instead of claiming residency is unique. Re-verify
+  before launch and before quoting any row in a contract.
 - **No FAQ and no language toggle.** The page is Indonesian only; `/en/` was removed on purpose.
 
 ## One claim that outruns the product
 
-`src/i18n/id.ts:58` ("Akses tercatat — akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi
+`src/i18n/id.ts:63` ("Akses tercatat — akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi
 mana") is a commitment, not a description. The audit log today records account, role and API-key mutations
 (`pkg/types/types.go:147-172` in `../dinoculars`), not operator reads of traces or logs — see the `staff-data-access-audit`
 item in `../dinoculars/aidlc-docs/backlog.md`. Kept on the page by owner decision; do not quote it in a contract until
 that item ships.
 - The ingest endpoint in the code sample is a placeholder (`<endpoint>`): the real one is shown to a user on the Setup screen.
-- The compliance note (`src/i18n/id.ts:61`) promises a DPA, written incident notice ≤ 3×24 jam, data-subject requests ≤ 3×24 jam, and destruction per retention policy. Those are operating commitments, not descriptions — confirm and document them before quoting the note in a contract.
+- The data facts grid (`src/i18n/id.ts:60-65`) states a DPA, written incident notice ≤ 3×24 jam, data-subject requests ≤ 3×24 jam, and destruction per retention policy. Those are operating commitments, not descriptions — confirm and document them before quoting any cell in a contract.
+- The hero badge and the data-section clock both target `2027-01-16T00:00:00+07:00`, the day PP 33/2026 starts applying
+  (promulgated 16 July 2026, six-month transition). The clock updates every second and clamps at zero; after that date,
+  replace the countdown copy rather than letting it read "0 hari lagi".
+
+## Design system alignment
+
+Palette, typefaces and logo geometry follow the Lumost design system in
+`../dinoculars-frontend/src/styles/tokens.css` and Storybook (`Docs/Brand identity`, `Docs/Design standard`). The landing
+uses the dark palette's exact values (`#100f0d`, `#161512`, `#2f2d28`, `#c9c7c2`, `#14b8a6`, accent foreground `#0b1014`),
+radius 4 px on every surface, Barlow Semi Condensed + Roboto Mono, and the same `logo-mark.svg` (md5
+`ff2fd0073340b4be86afbd801330462b`). The page is a single dark theme — there is no light mode; section alternation
+uses `#100f0d` / `#161512` plus hairline borders.
+
+Deviations, kept deliberately and recorded here:
+
+- **Marketing display scale.** Hero/H2 sizes and the hero's `-0.04em` tracking are larger/tighter than the product's
+  `-0.008em` heading token; the tokens define app UI, not a landing page.
+- **4 px radius instead of 0.** Requested by the owner for this landing page; the design system's zero-radius rule still
+  applies to the product UI.
+- **Archipelago dot map.** Generated from public GeoJSON by `scripts/build-archipelago.py` into
+  `public/indonesia-dots.svg` (1000×383, ~2.6k dots, brand teal). It is an illustration, not a Storybook component.
+  Re-run the script only when the source geometry or brand hue changes.
+- **Comparison table, countdown clock, transfer diagram and 8-cell facts grid** are page-specific compositions of
+  existing tokens, not Storybook primitives.
+- **Meta description is Indonesian**, while the brand doc puts the English tagline "Every signal, brought to light." in
+  the meta description. The footer keeps the tagline; the meta description is localized for the audience.
 
 ## Hosting: GitHub Pages at https://lumost.id
 

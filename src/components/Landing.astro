@@ -15,6 +15,7 @@ interface Props { t: Dict }
 const { t } = Astro.props;
 const tourImages = [overview, traces, services, dashboard, alerts, hostDetail];
 const wa = waLink(t.contact.waText);
+const daysLeft = Math.max(0, Math.ceil((new Date('2027-01-16T00:00:00+07:00').getTime() - Date.now()) / 86400000));
 const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2m0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.42.06-.64.31-.22.25-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.17 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.11-.22-.17-.47-.29';
 ---
 <a class="skip" href="#main">{t.nav.skip}</a>
@@ -24,8 +25,9 @@ const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 
     <a class="brand" href="#top" aria-label="Lumost"><img src="/logo-mark.svg" alt="" width="32" height="32" />Lumost</a>
     <nav class="nav" aria-label="Main">
       <a href="#produk">{t.nav.product}</a>
-      <a href="#cara-kerja">{t.nav.how}</a>
       <a href="#data">{t.nav.data}</a>
+      <a href="#cara-kerja">{t.nav.how}</a>
+      <a href="#perbandingan">{t.nav.compare}</a>
       <a class="btn primary" href="#kontak">{t.nav.cta}</a>
     </nav>
   </div>
@@ -33,16 +35,21 @@ const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 
 
 <main id="main">
   <section class="hero" id="top">
-    <img class="mark-bg" src="/logo-mark.svg" alt="" aria-hidden="true" />
     <div class="wrap grid">
       <div class="copy">
+        <p class="due"><span class="due-dot" aria-hidden="true"></span><span class="due-text">{t.hero.badge}</span><span class="sep" aria-hidden="true">·</span><span class="days"><b data-days>{daysLeft}</b> {t.hero.daysSuffix}</span></p>
         <h1>{t.hero.title.map((l, i) => <><span>{l}</span>{i < t.hero.title.length - 1 ? ' ' : ''}</>)}</h1>
-        <p class="sub">{t.hero.sub}</p>
-        <div class="cta"><a class="btn primary" href="#kontak">{t.hero.primary}</a><a class="btn ghost" href="#produk">{t.hero.secondary}</a></div>
-        <p class="note">{t.hero.note}</p>
-      </div>
-      <div class="shot">
-        <Image src={overview} alt={t.hero.shotAlt} width={1280} loading="eager" fetchpriority="high" />
+        <div class="hero-split">
+          <div class="hero-lede">
+            <p class="sub">{t.hero.sub}</p>
+            <div class="cta"><a class="btn primary" href="#kontak">{t.hero.primary}</a><a class="btn ghost" href="#produk">{t.hero.secondary}</a></div>
+            <p class="note">{t.hero.note}</p>
+          </div>
+          <figure class="map" role="img" aria-label={t.hero.mapAlt}>
+            <img src="/indonesia-dots.svg" alt="" width="1000" height="383" loading="eager" fetchpriority="high" />
+            <span class="hub" style="--x:26.27%;--y:70.6%"><span class="hub-tag">{t.hero.mapTag}</span></span>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -50,16 +57,20 @@ const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 
   <section class="signals" aria-label="Signals">
     <div class="wrap">
       <ul>
-        {t.signals.map((s) => <li><span class="n">{s.n}</span><h3>{s.t}</h3><p>{s.d}</p></li>)}
+        {t.signals.map((s) => <li><h3>{s.t}</h3><p>{s.d}</p></li>)}
       </ul>
     </div>
   </section>
 
   <section class="band" id="produk">
     <div class="wrap">
-      <p class="kicker">{t.tour.kicker}</p>
-      <h2 class="title">{t.tour.title}</h2>
-      <p class="lede">{t.tour.lede}</p>
+      <div class="head">
+        <p class="kicker">{t.tour.kicker}</p>
+        <div>
+          <h2 class="title">{t.tour.title}</h2>
+          <p class="lede">{t.tour.lede}</p>
+        </div>
+      </div>
       <div class="tour">
         {t.tour.items.map((it, i) => (
           <input class="tour-radio" type="radio" name="tour" id={`tab-${i}`} checked={i === 0} aria-label={it.tab} />
@@ -70,7 +81,58 @@ const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 
         {t.tour.items.map((it, i) => (
           <div class={`panel panel-${i}`}>
             <div><h3>{it.title}</h3><p>{it.text}</p></div>
-            <figure><Image src={tourImages[i]} alt={it.alt} width={1280} loading={i === 0 ? 'eager' : 'lazy'} /></figure>
+            <figure class="shot">
+              <div class="chrome"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">app.lumost.id / produk</span><span class="live"><i aria-hidden="true"></i>live</span></div>
+              <Image src={tourImages[i]} alt={it.alt} width={1280} loading={i === 0 ? 'eager' : 'lazy'} />
+            </figure>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark" id="data">
+    <div class="wrap">
+      <div class="head">
+        <p class="kicker">{t.data.kicker}</p>
+        <div>
+          <h2 class="title">{t.data.title}</h2>
+          <p class="lede">{t.data.lede}</p>
+        </div>
+      </div>
+      <div class="data-top">
+        <div class="deadline">
+          <p class="mini-label">{t.data.countdown.label}</p>
+          <div class="clock" aria-hidden="true">
+            <div><b data-cd="d">{daysLeft}</b><span>{t.data.countdown.units[0]}</span></div>
+            <div><b data-cd="h">00</b><span>{t.data.countdown.units[1]}</span></div>
+            <div><b data-cd="m">00</b><span>{t.data.countdown.units[2]}</span></div>
+            <div><b data-cd="s">00</b><span>{t.data.countdown.units[3]}</span></div>
+          </div>
+          <p class="deadline-note">{t.data.countdown.note}</p>
+        </div>
+        <div class="flow">
+          <p class="mini-label">{t.data.flow.globalLabel}</p>
+          <div class="flow-row">
+            <span class="node"><b>{t.data.flow.app}</b><small>{t.data.flow.appMeta}</small></span>
+            <span class="link bad"><i>{t.data.flow.border}</i></span>
+            <span class="node"><b>{t.data.flow.ingest}</b><small>{t.data.flow.ingestMeta}</small></span>
+          </div>
+          <p class="flow-note bad">{t.data.flow.bad}</p>
+          <p class="mini-label">{t.data.flow.localLabel}</p>
+          <div class="flow-row">
+            <span class="node"><b>{t.data.flow.app}</b><small>{t.data.flow.appMeta}</small></span>
+            <span class="link good"></span>
+            <span class="node brand"><b>{t.data.flow.localNode}</b><small>{t.data.flow.localMeta}</small></span>
+          </div>
+          <p class="flow-note good">{t.data.flow.good}</p>
+        </div>
+      </div>
+      <div class="sovereignty">
+        {t.data.items.map((d) => (
+          <div class="sov">
+            <h3>{d.t}</h3>
+            <p>{d.d}</p>
           </div>
         ))}
       </div>
@@ -79,9 +141,13 @@ const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 
 
   <section class="band wash" id="cara-kerja">
     <div class="wrap">
-      <p class="kicker">{t.how.kicker}</p>
-      <h2 class="title">{t.how.title}</h2>
-      <p class="lede">{t.how.lede}</p>
+      <div class="head">
+        <p class="kicker">{t.how.kicker}</p>
+        <div>
+          <h2 class="title">{t.how.title}</h2>
+          <p class="lede">{t.how.lede}</p>
+        </div>
+      </div>
       <div class="how-grid">
         <ol class="steps">
           {t.how.steps.map((st) => <li><h3>{st.t}</h3><p>{st.d}</p></li>)}
@@ -94,21 +160,43 @@ OTEL_EXPORTER_OTLP_HEADERS=<span class="s">"Authorization=Bearer &lt;ingest-key&
 OTEL_SERVICE_NAME=<span class="s">"my-service"</span></code></pre>
           <p class="code-note">{t.how.codeNote}</p>
           <p class="agent">{t.how.agentNote}</p>
-          <figure class="how-shot"><Image src={setup} alt={t.how.shotAlt} width={1200} loading="lazy" /></figure>
+          <figure class="how-shot shot">
+            <div class="chrome"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">app.lumost.id / setup</span><span class="live"><i aria-hidden="true"></i>live</span></div>
+            <Image src={setup} alt={t.how.shotAlt} width={1200} loading="lazy" />
+          </figure>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="band dark" id="data">
+  <section class="band" id="perbandingan">
     <div class="wrap">
-      <p class="kicker">{t.data.kicker}</p>
-      <h2 class="title">{t.data.title}</h2>
-      <p class="lede">{t.data.lede}</p>
-      <div class="cards">
-        {t.data.items.map((d) => <div class="card"><h3>{d.t}</h3><p>{d.d}</p></div>)}
+      <div class="head">
+        <p class="kicker">{t.compare.kicker}</p>
+        <div>
+          <h2 class="title">{t.compare.title}</h2>
+          <p class="lede">{t.compare.lede}</p>
+        </div>
       </div>
-      <p class="compliance"><strong>{t.data.compliance.title}</strong> {t.data.compliance.text}</p>
+      <div class="compare" role="region" aria-label={t.compare.kicker} tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">{t.compare.aspect}</th>
+              {t.compare.columns.map((c, i) => <th scope="col" class={i === 0 ? 'is-lumost' : ''}>{c}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {t.compare.rows.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                {row.values.map((v, i) => <td class={i === 0 ? 'is-lumost' : ''} data-label={t.compare.columns[i]}>{v}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="src">{t.compare.note}</p>
     </div>
   </section>
 
@@ -126,8 +214,10 @@ OTEL_SERVICE_NAME=<span class="s">"my-service"</span></code></pre>
 
   <section class="band dark" id="kontak">
     <div class="wrap">
-      <p class="kicker">{t.contact.kicker}</p>
-      <h2 class="title">{t.contact.title}</h2>
+      <div class="head">
+        <p class="kicker">{t.contact.kicker}</p>
+        <div><h2 class="title">{t.contact.title}</h2></div>
+      </div>
       <div class="contact-grid">
         <div>
           <p class="lede" style="margin-top:0">{t.contact.lede}</p>
@@ -155,3 +245,24 @@ OTEL_SERVICE_NAME=<span class="s">"my-service"</span></code></pre>
     <span>lumost.id · {t.footer.rights}</span>
   </div>
 </footer>
+
+<script>
+  const days = document.querySelector('[data-days]');
+  const clock = document.querySelectorAll('[data-cd]');
+  if (days || clock.length) {
+    const target = new Date('2027-01-16T00:00:00+07:00').getTime();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const update = () => {
+      const ms = Math.max(0, target - Date.now());
+      if (days) days.textContent = String(Math.floor(ms / 86400000));
+      if (clock.length) {
+        const parts = [Math.floor(ms / 86400000), Math.floor(ms / 3600000) % 24, Math.floor(ms / 60000) % 60, Math.floor(ms / 1000) % 60];
+        clock.forEach((el, i) => { el.textContent = pad(parts[i]); });
+      }
+    };
+    update();
+    const timer = window.setInterval(update, clock.length ? 1000 : 3_600_000);
+    document.addEventListener('visibilitychange', update);
+    window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
+  }
+</script>
