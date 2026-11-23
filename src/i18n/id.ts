@@ -3,13 +3,12 @@ export const id = {
   locale: 'id_ID',
   meta: {
     title: 'Lumost — observability untuk tim yang merilis produknya',
-    description: 'Trace, metric, log, dan peta dependensi dalam satu konsol, dengan server di Indonesia. Akses terbatas untuk beberapa tim pertama.',
+    description: 'Trace, metric, log, dan service map dalam satu dashboard, dengan data di Indonesia. Siap UU PDP 27/2022 dan PP 33/2026, dengan harga per host yang lebih murah.',
   },
   nav: { product: 'Produk', how: 'Cara kerja', data: 'Data', cta: 'Hubungi kami', skip: 'Lewati ke konten' },
   hero: {
-    eyebrow: 'Observability · server di Indonesia',
-    title: ['Lihat apa yang terjadi', 'di sistem Anda,', 'sebelum pelanggan yang bilang.'],
-    sub: 'Trace, metric, log, dan peta dependensi antar-service dalam satu konsol. Dibuat di Indonesia, dengan server di Indonesia.',
+    title: ['Observability dalam satu dashboard.', 'Data di Indonesia.'],
+    sub: 'PP 33/2026 mulai ditegakkan awal 2027. Data observability Anda tetap di Indonesia, tanpa transfer ke luar negeri — dan biayanya lebih murah daripada Datadog atau Grafana Cloud, dengan tagihan per host yang bisa diprediksi.',
     primary: 'Minta demo',
     secondary: 'Lihat produknya',
     note: 'Masih tahap awal. Kami membuka akses untuk beberapa tim pertama.',

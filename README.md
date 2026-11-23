@@ -75,17 +75,18 @@ That stops naive bots only — add Cloudflare Turnstile if the page starts attra
 
 ## Deliberately not on the page
 
-- **No prices and no competitor comparison.** The page says the bill is per host and that the numbers come up in the demo.
+- **No prices, and competitor names only as a cost contrast.** Datadog and Grafana Cloud appear once in the hero as the expensive alternative to a cheaper per-host bill; there are no price figures and no feature comparison.
 - **No FAQ and no language toggle.** The page is Indonesian only; `/en/` was removed on purpose.
 
 ## One claim that outruns the product
 
-`src/i18n/id.ts:59` ("Akses tercatat — akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi
+`src/i18n/id.ts:58` ("Akses tercatat — akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi
 mana") is a commitment, not a description. The audit log today records account, role and API-key mutations
 (`pkg/types/types.go:147-172` in `../dinoculars`), not operator reads of traces or logs — see the `staff-data-access-audit`
 item in `../dinoculars/aidlc-docs/backlog.md`. Kept on the page by owner decision; do not quote it in a contract until
 that item ships.
 - The ingest endpoint in the code sample is a placeholder (`<endpoint>`): the real one is shown to a user on the Setup screen.
+- The compliance note (`src/i18n/id.ts:61`) promises a DPA, written incident notice ≤ 3×24 jam, data-subject requests ≤ 3×24 jam, and destruction per retention policy. Those are operating commitments, not descriptions — confirm and document them before quoting the note in a contract.
 
 ## Hosting: GitHub Pages at https://lumost.id
 
