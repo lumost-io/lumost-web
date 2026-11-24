@@ -13,7 +13,7 @@ const config = JSON.stringify({
   labels: { name: f.name, email: f.email, company: f.company, hosts: f.hosts, message: f.message },
 });
 ---
-<form class="lead" id="lead" novalidate data-config={config}>
+<form class="lead-form" id="lead" novalidate data-config={config}>
   <div class="two">
     <div class="field">
       <label for="f-name">{f.name}<i>{f.required}</i></label>
@@ -39,7 +39,7 @@ const config = JSON.stringify({
     <textarea id="f-message" name="message" placeholder={f.messagePlaceholder}></textarea>
   </div>
   <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
-  <button class="btn primary" type="submit">{f.submit}</button>
+  <button class="btn p" type="submit">{f.submit}</button>
   <p class="status" role="status" aria-live="polite"></p>
   {!site.formEndpoint && <p class="hint">{f.mailtoHint}</p>}
 </form>

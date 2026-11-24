@@ -1,268 +1,377 @@
 ---
-import { Image } from 'astro:assets';
 import type { Dict } from '../i18n/id';
 import { site, waLink } from '../site';
 import ContactForm from './ContactForm.astro';
-import overview from '../assets/shots/01-overview.png';
-import traces from '../assets/shots/02-traces.png';
-import services from '../assets/shots/03-services.png';
-import dashboard from '../assets/shots/06-dashboard.png';
-import alerts from '../assets/shots/07-alerts.png';
-import hostDetail from '../assets/shots/13-host-detail.png';
-import setup from '../assets/shots/15-onboarding-setup.png';
 
 interface Props { t: Dict }
 const { t } = Astro.props;
-const tourImages = [overview, traces, services, dashboard, alerts, hostDetail];
-const wa = waLink(t.contact.waText);
-const daysLeft = Math.max(0, Math.ceil((new Date('2027-01-16T00:00:00+07:00').getTime() - Date.now()) / 86400000));
-const waPath = 'M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2m0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.42.06-.64.31-.22.25-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.17 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.11-.22-.17-.47-.29';
----
-<a class="skip" href="#main">{t.nav.skip}</a>
 
-<header class="site-header">
+const wa = waLink('Halo, saya [nama] dari [perusahaan]. Saya tertarik dengan Lumost dan ingin minta demo 30 menit.');
+const mail = `mailto:${site.founder.email}`;
+---
+<a class="skip" href="#main">Lewati ke konten</a>
+
+<div class="ann" role="note"><b>Akses terbatas untuk tim pertama</b> · Gratis 90 hari · <a href="#partner">Lihat programnya</a></div>
+
+<header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Lumost"><img src="/logo-mark.svg" alt="" width="32" height="32" />Lumost</a>
-    <nav class="nav" aria-label="Main">
-      <a href="#produk">{t.nav.product}</a>
-      <a href="#data">{t.nav.data}</a>
-      <a href="#cara-kerja">{t.nav.how}</a>
-      <a href="#perbandingan">{t.nav.compare}</a>
-      <a class="btn primary" href="#kontak">{t.nav.cta}</a>
+    <a class="logo" href="#top" aria-label="Lumost, ke atas"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M25.09 20.63A10.2 10.2 0 0 0 8.48 9.11A10.2 10.2 0 0 0 21.41 24.65" stroke="#14b8a6" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="4.6" fill="#bda3ea"/></svg>Lumost</a>
+    <nav aria-label="Utama">
+      <ul>
+        <li><a href="#produk">Produk</a></li>
+        <li><a href="#perbandingan">Perbandingan</a></li>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#partner">Design partner</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
     </nav>
+    <a class="btn p" href="#kontak">Minta demo</a>
   </div>
 </header>
 
 <main id="main">
-  <section class="hero" id="top">
-    <div class="wrap grid">
-      <div class="copy">
-        <p class="due"><span class="due-dot" aria-hidden="true"></span><span class="due-text">{t.hero.badge}</span><span class="sep" aria-hidden="true">·</span><span class="days"><b data-days>{daysLeft}</b> {t.hero.daysSuffix}</span></p>
-        <h1>{t.hero.title.map((l, i) => <><span>{l}</span>{i < t.hero.title.length - 1 ? ' ' : ''}</>)}</h1>
-        <div class="hero-split">
-          <div class="hero-lede">
-            <p class="sub">{t.hero.sub}</p>
-            <div class="cta"><a class="btn primary" href="#kontak">{t.hero.primary}</a><a class="btn ghost" href="#produk">{t.hero.secondary}</a></div>
-            <p class="note">{t.hero.note}</p>
+<!-- HERO -->
+<section class="hero" id="top" aria-labelledby="h-hero">
+  <div class="idn idn-bg" data-map="full" role="img" aria-label="Peta Indonesia: data dari berbagai wilayah mengalir ke Jakarta dan Banten, tidak keluar negeri"><span class="hub-tag" aria-hidden="true">Jakarta · <b>Banten</b></span></div>
+  <div class="wrap">
+    <h1 id="h-hero">Observability dalam satu dashboard. <em>Data di Indonesia.</em></h1>
+    <p class="lead">Trace, metric, log, dan service map dalam satu konsol. Tagihan per host dalam rupiah, tanpa biaya per span.</p>
+    <div class="cta">
+      <a class="btn p" href="#kontak">Minta demo 30 menit</a>
+      <a class="btn s" href="#produk">Lihat produknya</a>
+    </div>
+    <div class="hcount" role="timer" aria-label="Hitung mundur menuju 16 Januari 2027, penegakan PP 33/2026">
+      <div class="hc-l"><b>PP 33/2026 berlaku 16 Januari 2027</b><span>Setelah itu, transfer data pribadi ke luar negeri perlu dasar hukum. Data yang tidak keluar dari Indonesia tidak terkena syarat itu.</span></div>
+      <div class="count">
+        <div><b id="cd">--</b><span>hari</span></div><div><b id="ch">--</b><span>jam</span></div><div><b id="cm">--</b><span>menit</span></div><div><b id="cs">--</b><span>detik</span></div>
+      </div>
+    </div>
+    <p class="note">Akses terbatas · gratis 90 hari untuk tim pertama</p>
+
+    <div class="card glow" aria-label="Contoh tampilan ringkasan Lumost dengan data demo">
+      <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.lumost.id / produk</span><span class="live">data demo</span></div>
+      <div class="body">
+        <div class="banner" id="hb" role="status" aria-live="off"><span class="dot"></span><span id="hbt">1 dari 5 service bermasalah: payment-api</span></div>
+        <div class="svc-grid" id="hg"></div>
+        <p class="cap" style="margin-top:14px">Empat service sehat, satu bermasalah. Satu angka uptime akan menyembunyikannya; satu kartu per service tidak.</p>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div><b class="n">4 sinyal</b><p>Trace, metric, log, dan service map dalam satu konsol.</p></div>
+      <div><b class="n">Per host</b><p>Tagihan flat dalam rupiah. Bukan per span atau per GB.</p></div>
+      <div><b class="n">0 transfer</b><p>Data tetap di Banten dan Jakarta, tidak keluar negeri.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MASALAH -->
+<section id="masalah" aria-labelledby="h-masalah">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">01 · Masalah</span>
+      <h2 id="h-masalah">Kenapa observability sering ditunda di tim Indonesia</h2>
+      <p class="lead">Tiga hal yang kami dengar berulang, dan yang kami bangun Lumost untuk menjawabnya.</p>
+    </div>
+    <div class="grid3 c3 rv">
+      <div class="item"><h3>Mahal, dan susah ditebak</h3><p>Tagihan ikut naik setiap kali volume span dan log naik, termasuk saat ada insiden. Saat Anda paling butuh datanya, biayanya paling sulit diprediksi.</p><span class="sol">Lumost: per host, flat.</span></div>
+      <div class="item"><h3>Datanya keluar negeri</h3><p>Trace dan log berisi data pengguna. Region vendor global umumnya di luar Indonesia, sehingga muncul pertanyaan audit: “log kita disimpan di mana?”</p><span class="sol">Lumost: Banten dan Jakarta, tanpa transfer.</span></div>
+      <div class="item"><h3>Dolar dan kartu kredit</h3><p>Perusahaan lokal belanja lewat faktur rupiah, PPN, dan transfer bank, bukan kartu korporat dalam dolar.</p><span class="sol">Lumost: faktur rupiah, transfer atau virtual account.</span></div>
+    </div>
+    <p class="m rv" style="margin-top:28px;max-width:70ch">Akibatnya banyak tim menjalankan Grafana, Prometheus, atau ELK sendiri: lisensinya gratis, tapi butuh satu engineer, dan biasanya tanpa trace. Sisanya tidak memakai apa-apa sampai insiden besar pertama.</p>
+  </div>
+</section>
+
+<!-- PRODUK -->
+<section id="produk" aria-labelledby="h-produk">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">02 · Produk</span>
+      <h2 id="h-produk">Dari “ada yang lambat” sampai ke penyebabnya</h2>
+      <p class="lead">Satu skenario: checkout melambat. Ikuti dari banner status sampai host penyebabnya. Tur berjalan otomatis; klik menu mana pun untuk mengambil alih.</p>
+      <div class="cta" style="margin-top:28px"><a class="btn p" href="#kontak">Minta demo</a></div>
+    </div>
+
+    <div class="rv">
+      <div class="card glow app" id="app">
+        <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url" id="app-url">app.lumost.id / ringkasan</span><span class="chip">production</span><span class="chip">15 menit terakhir</span><span class="live">data demo</span></div>
+        <div class="appgrid">
+          <div class="side" role="tablist" aria-label="Tur produk" aria-orientation="vertical">
+            <button class="tb" role="tab" id="t0" aria-controls="p0" aria-selected="true"><i>01</i>Ringkasan<s class="pg"></s></button>
+            <button class="tb" role="tab" id="t1" aria-controls="p1" aria-selected="false" tabindex="-1"><i>02</i>Trace<s class="pg"></s></button>
+            <button class="tb" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><i>03</i>Service map<s class="pg"></s></button>
+            <button class="tb" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><i>04</i>Dashboard<s class="pg"></s></button>
+            <button class="tb" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1"><i>05</i>Alert<s class="pg"></s></button>
+            <button class="tb" role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1"><i>06</i>Infrastruktur<s class="pg"></s></button>
+            <button class="ap" id="ap" type="button" aria-pressed="false">Jeda tur</button>
           </div>
-          <figure class="map" role="img" aria-label={t.hero.mapAlt}>
-            <img src="/indonesia-dots.svg" alt="" width="1000" height="383" loading="eager" fetchpriority="high" />
-            <span class="hub" style="--x:26.27%;--y:70.6%"><span class="hub-tag">{t.hero.mapTag}</span></span>
-          </figure>
+          <div class="main">
+            <!-- 0 ringkasan -->
+            <div class="panel on" id="p0" role="tabpanel" aria-labelledby="t0" tabindex="0">
+              <div class="banner"><span class="dot"></span><span>1 dari 5 service bermasalah: <b>payment-api</b></span></div>
+              <div class="mini">
+                <div><span>web-frontend</span><b>120 ms</b><small>error 0,1%</small></div>
+                <div><span>order-api</span><b>176 ms</b><small>error 0,2%</small></div>
+                <div><span>inventory</span><b>95 ms</b><small>error 0,0%</small></div>
+                <div><span>auth</span><b>60 ms</b><small>error 0,1%</small></div>
+                <div class="bad"><span>payment-api</span><b>1.840 ms</b><small>error 4,8%</small></div>
+              </div>
+              <div class="chartbox">
+                <div class="ch-h"><span>p99 payment-api</span><span class="pill">alert aktif sejak 14:02</span></div>
+                <svg viewBox="0 0 600 150" preserveAspectRatio="none" aria-hidden="true">
+                  <defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f07167" stop-opacity=".35"/><stop offset="1" stop-color="#f07167" stop-opacity="0"/></linearGradient></defs>
+                  <line x1="0" x2="600" y1="80" y2="80" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 5"/>
+                  <path class="area" d="M0 112 L40 108 L80 114 L120 106 L160 111 L200 107 L240 113 L280 109 L320 112 L360 108 L400 110 L440 90 L480 60 L520 38 L560 26 L600 22 L600 150 L0 150Z" fill="url(#ga)"/>
+                  <path class="ln" pathLength="1000" d="M0 112 L40 108 L80 114 L120 106 L160 111 L200 107 L240 113 L280 109 L320 112 L360 108 L400 110 L440 90 L480 60 L520 38 L560 26 L600 22" fill="none" stroke="#f07167" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                </svg>
+                <span class="thr">ambang 500 ms</span>
+              </div>
+            </div>
+            <!-- 1 trace -->
+            <div class="panel" id="p1" role="tabpanel" aria-labelledby="t1" tabindex="0" hidden>
+              <div class="filters"><span>service: <b>payment-api</b></span><span>status: <b>error</b></span><span>durasi: <b>&gt; 1 s</b></span></div>
+              <div class="trgrid">
+                <div class="trlist">
+                  <div class="tr sel"><b>POST /checkout</b><span>1.920 ms</span><em>error</em></div>
+                  <div class="tr"><b>POST /checkout</b><span>1.760 ms</span><em>error</em></div>
+                  <div class="tr"><b>POST /refund</b><span>1.310 ms</span><em>error</em></div>
+                  <div class="tr"><b>POST /checkout</b><span>1.280 ms</span><em>ok</em></div>
+                </div>
+                <div>
+                  <div class="wf2">
+                    <div class="r" style="--k:0"><span>POST /checkout</span><div class="t"><b style="left:0;width:100%"></b></div><span>1.920 ms</span></div>
+                    <div class="r" style="--k:1"><span>&nbsp;order-api</span><div class="t"><b style="left:3%;width:92%"></b></div><span>1.850 ms</span></div>
+                    <div class="r" style="--k:2"><span>&nbsp;&nbsp;auth.verify</span><div class="t"><b style="left:5%;width:10%"></b></div><span>60 ms</span></div>
+                    <div class="r" style="--k:3"><span>&nbsp;&nbsp;payment-api</span><div class="t"><b style="left:18%;width:74%"></b></div><span>1.420 ms</span></div>
+                    <div class="r" style="--k:4"><span>&nbsp;&nbsp;&nbsp;db.query</span><div class="t"><b class="slow" style="left:24%;width:62%"></b></div><span>1.190 ms</span></div>
+                  </div>
+                  <div class="sqlbox"><span class="pill">span terlama</span><code>SELECT … FROM payments WHERE order_id = ?</code></div>
+                </div>
+              </div>
+            </div>
+            <!-- 2 service map -->
+            <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2" tabindex="0" hidden>
+              <svg class="smap" viewBox="0 0 640 250" role="img" aria-label="Peta service: web-frontend ke order-api ke payment-api yang lambat; legacy-erp tidak mengirim span">
+                <g fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.5">
+                  <path class="fl" d="M140 125H190"/><path class="fl" d="M250 106V60"/><path class="fl" d="M250 144V190"/>
+                  <path class="fl hot" d="M310 125H360"/><path class="fl" d="M480 115L520 79"/>
+                  <path d="M480 135L520 189" stroke-dasharray="3 5"/>
+                </g>
+                <g font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#a5a29b">
+                  <text x="152" y="118">180 ms</text><text x="318" y="118" fill="#f07167">1,4 s</text><text x="434" y="96">320 ms</text><text x="424" y="178" fill="#8c8981">tanpa span</text>
+                </g>
+                <g font-family="ui-monospace,Menlo,monospace" font-size="12" fill="#e3e1de">
+                  <rect x="20" y="106" width="120" height="38" rx="10" class="nd"/><text x="38" y="129">web-frontend</text>
+                  <rect x="190" y="106" width="120" height="38" rx="10" class="nd"/><text x="214" y="129">order-api</text>
+                  <rect x="190" y="22" width="120" height="38" rx="10" class="nd"/><text x="226" y="45">auth</text>
+                  <rect x="190" y="190" width="120" height="38" rx="10" class="nd"/><text x="218" y="213">inventory</text>
+                  <rect x="360" y="106" width="120" height="38" rx="10" class="nd bad"/><text x="378" y="129" fill="#f07167">payment-api</text>
+                  <rect x="520" y="60" width="100" height="38" rx="10" class="nd"/><text x="540" y="83">postgres</text>
+                  <rect x="520" y="170" width="100" height="38" rx="10" class="nd off"/><text x="534" y="193" fill="#8c8981">legacy-erp</text>
+                </g>
+              </svg>
+              <div class="legend2"><span><i class="lb"></i>lambat</span><span><i class="lo"></i>tidak mengirim span, ditandai apa adanya</span></div>
+            </div>
+            <!-- 3 dashboard -->
+            <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3" tabindex="0" hidden>
+              <div class="dbar"><b>On-call · checkout</b><span class="chip">versi 12 · bisa dipulihkan</span></div>
+              <div class="dash2">
+                <div class="w c4">Request rate<b id="d-rr">1,2 rb/mnt</b></div>
+                <div class="w c4">p99<b id="d-p99">180 ms</b></div>
+                <div class="w c4">Error<b id="d-er">0,2%</b></div>
+                <div class="w c8">Latensi order-api
+                  <svg viewBox="0 0 400 90" preserveAspectRatio="none" aria-hidden="true" class="live"><polyline id="d-line" fill="none" stroke="#2dd4bf" stroke-width="2" vector-effect="non-scaling-stroke" points=""/></svg></div>
+                <div class="w c4">Error per service
+                  <div class="hb"><span>payment-api</span><i style="--w:86%"></i></div>
+                  <div class="hb"><span>order-api</span><i style="--w:18%"></i></div>
+                  <div class="hb"><span>auth</span><i style="--w:8%"></i></div></div>
+              </div>
+            </div>
+            <!-- 4 alert -->
+            <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4" tabindex="0" hidden>
+              <div class="rules">
+                <div class="rule2 fire"><div><b>payment-api p99 tinggi</b><code>histogram_quantile(0.99, …) &gt; 500 ms · for 5m</code></div><span class="sev">critical</span><span class="st">FIRING</span></div>
+                <div class="rule2"><div><b>order-api error rate</b><code>rate(errors[5m]) / rate(total[5m]) &gt; 2% · for 10m</code></div><span class="sev w2">warning</span><span class="st ok">OK</span></div>
+                <div class="rule2"><div><b>host CPU tinggi</b><code>cpu_usage &gt; 90% · for 15m</code></div><span class="sev w2">warning</span><span class="st ok">OK</span></div>
+              </div>
+              <div class="toast"><div><b>payment-api p99 &gt; 500 ms selama 5 menit</b><span>Terkirim ke channel on-call · 14:07</span></div><button type="button" tabindex="-1">Silence 1 jam</button></div>
+            </div>
+            <!-- 5 infra -->
+            <div class="panel" id="p5" role="tabpanel" aria-labelledby="t5" tabindex="0" hidden>
+              <div class="crumbs"><span>trace</span><i></i><span>service: payment-api</span><i></i><span class="hl">pod payment-api-7d9f · host-03</span></div>
+              <div class="hosts">
+                <div class="hrow hd"><span>Host / pod</span><span>CPU</span><span>Memori</span></div>
+                <div class="hrow"><span>host-01 · order-api</span><div class="cpu"><i style="width:34%"></i></div><div class="cpu"><i style="width:48%"></i></div></div>
+                <div class="hrow"><span>host-02 · inventory</span><div class="cpu"><i style="width:22%"></i></div><div class="cpu"><i style="width:41%"></i></div></div>
+                <div class="hrow hot"><span>host-03 · payment-api-7d9f</span><div class="cpu"><i class="hi" style="width:92%"></i></div><div class="cpu"><i class="hi" style="width:78%"></i></div></div>
+                <div class="hrow"><span>host-04 · auth</span><div class="cpu"><i style="width:18%"></i></div><div class="cpu"><i style="width:30%"></i></div></div>
+              </div>
+            </div>
+            <p class="story" id="story" aria-live="off">1. Banner status menunjukkan satu service bermasalah: payment-api. Empat lainnya sehat.</p>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="signals" aria-label="Signals">
-    <div class="wrap">
-      <ul>
-        {t.signals.map((s) => <li><h3>{s.t}</h3><p>{s.d}</p></li>)}
-      </ul>
+<!-- HARGA -->
+<section id="perbandingan" aria-labelledby="h-harga">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">03 · Perbandingan</span>
+      <h2 id="h-harga">Tagihan mengikuti jumlah host, bukan trafik</h2>
+      <p class="lead">Satu harga per host, bukan per span atau per GB, jadi tagihan tidak ikut naik saat insiden. Proposal harga kami kirim setelah Anda minta demo.</p>
+      <div class="cta" style="margin-top:24px"><a class="btn p" href="#kontak">Minta demo</a></div>
     </div>
-  </section>
 
-  <section class="band" id="produk">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">{t.tour.kicker}</p>
-        <div>
-          <h2 class="title">{t.tour.title}</h2>
-          <p class="lede">{t.tour.lede}</p>
-        </div>
-      </div>
-      <div class="tour">
-        {t.tour.items.map((it, i) => (
-          <input class="tour-radio" type="radio" name="tour" id={`tab-${i}`} checked={i === 0} aria-label={it.tab} />
-        ))}
-        <div class="tour-tabs">
-          {t.tour.items.map((it, i) => <label for={`tab-${i}`}>{it.tab}</label>)}
-        </div>
-        {t.tour.items.map((it, i) => (
-          <div class={`panel panel-${i}`}>
-            <div><h3>{it.title}</h3><p>{it.text}</p></div>
-            <figure class="shot">
-              <div class="chrome"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">app.lumost.id / produk</span><span class="live"><i aria-hidden="true"></i>live</span></div>
-              <Image src={tourImages[i]} alt={it.alt} width={1280} loading={i === 0 ? 'eager' : 'lazy'} />
-            </figure>
-          </div>
-        ))}
-      </div>
+    <div class="card rv scroll-x" style="margin-top:20px">
+      <table class="cmp">
+        <caption style="position:absolute;left:-9999px">Perbandingan lokasi data dan model tagihan: Lumost, Datadog, New Relic, dan Grafana Cloud</caption>
+        <thead><tr><th scope="col">Aspek</th><th scope="col" class="us">Lumost</th><th scope="col">Datadog</th><th scope="col">New Relic</th><th scope="col">Grafana Cloud</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Lokasi data</th><td class="us">Indonesia (Jakarta dan Banten)</td><td>US, EU, Jepang, Australia, UK. Tidak ada region Indonesia.</td><td>US, EU, Jepang. Tidak ada region Indonesia.</td><td>Jakarta tersedia (AWS ap-southeast-3).</td></tr>
+          <tr><th scope="row">Transfer data pribadi ke luar negeri</th><td class="us">Tidak ada. Data tidak keluar dari Indonesia.</td><td>Ya, ke region di luar Indonesia.</td><td>Ya, ke region di luar Indonesia.</td><td>Tergantung region yang dipilih. Jakarta tersedia.</td></tr>
+          <tr><th scope="row">Model tagihan</th><td class="us">Per host, bukan per span atau per GB.</td><td>Per host per produk, lalu per GB dan per span.</td><td>Per GB ingest dan per user.</td><td>Per series, per GB, dan per host-hour.</td></tr>
+          <tr><th scope="row">Bahasa query</th><td class="us">PromQL.</td><td>Sintaks Datadog.</td><td>NRQL.</td><td>PromQL, LogQL, TraceQL.</td></tr>
+          <tr><th scope="row">Instrumentasi</th><td class="us">OpenTelemetry.</td><td>Agen sendiri dan OpenTelemetry.</td><td>Agen sendiri dan OpenTelemetry.</td><td>OpenTelemetry dan Alloy.</td></tr>
+        </tbody>
+      </table>
     </div>
-  </section>
+    <p class="src">Sumber: halaman harga dan dokumentasi region Datadog, New Relic, dan Grafana Cloud, diakses 22 November 2026. Region dan harga bisa berubah.</p>
+  </div>
+</section>
 
-  <section class="band dark" id="data">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">{t.data.kicker}</p>
-        <div>
-          <h2 class="title">{t.data.title}</h2>
-          <p class="lede">{t.data.lede}</p>
-        </div>
-      </div>
-      <div class="data-top">
-        <div class="deadline">
-          <p class="mini-label">{t.data.countdown.label}</p>
-          <div class="clock" aria-hidden="true">
-            <div><b data-cd="d">{daysLeft}</b><span>{t.data.countdown.units[0]}</span></div>
-            <div><b data-cd="h">00</b><span>{t.data.countdown.units[1]}</span></div>
-            <div><b data-cd="m">00</b><span>{t.data.countdown.units[2]}</span></div>
-            <div><b data-cd="s">00</b><span>{t.data.countdown.units[3]}</span></div>
-          </div>
-          <p class="deadline-note">{t.data.countdown.note}</p>
-        </div>
-        <div class="flow">
-          <p class="mini-label">{t.data.flow.globalLabel}</p>
-          <div class="flow-row">
-            <span class="node"><b>{t.data.flow.app}</b><small>{t.data.flow.appMeta}</small></span>
-            <span class="link bad"><i>{t.data.flow.border}</i></span>
-            <span class="node"><b>{t.data.flow.ingest}</b><small>{t.data.flow.ingestMeta}</small></span>
-          </div>
-          <p class="flow-note bad">{t.data.flow.bad}</p>
-          <p class="mini-label">{t.data.flow.localLabel}</p>
-          <div class="flow-row">
-            <span class="node"><b>{t.data.flow.app}</b><small>{t.data.flow.appMeta}</small></span>
-            <span class="link good"></span>
-            <span class="node brand"><b>{t.data.flow.localNode}</b><small>{t.data.flow.localMeta}</small></span>
-          </div>
-          <p class="flow-note good">{t.data.flow.good}</p>
-        </div>
-      </div>
-      <div class="sovereignty">
-        {t.data.items.map((d) => (
-          <div class="sov">
-            <h3>{d.t}</h3>
-            <p>{d.d}</p>
-          </div>
-        ))}
-      </div>
+<!-- DATA -->
+<section id="data" aria-labelledby="h-data">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">04 · Kedaulatan data</span>
+      <h2 id="h-data">Servernya di Indonesia, datanya tidak ke mana-mana</h2>
+      <p class="lead">Banyak tim, terutama di sektor keuangan, tidak boleh atau tidak mau mengirim data observability ke luar negeri. Dengan Lumost, pertanyaan itu selesai di level arsitektur.</p>
+      <div class="cta" style="margin-top:28px"><a class="btn p" href="#kontak">Minta demo</a></div>
     </div>
-  </section>
 
-  <section class="band wash" id="cara-kerja">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">{t.how.kicker}</p>
-        <div>
-          <h2 class="title">{t.how.title}</h2>
-          <p class="lede">{t.how.lede}</p>
-        </div>
-      </div>
-      <div class="how-grid">
-        <ol class="steps">
-          {t.how.steps.map((st) => <li><h3>{st.t}</h3><p>{st.d}</p></li>)}
-        </ol>
-        <div class="how-side">
-          <p class="code-title">{t.how.codeTitle}</p>
-<pre class="code"><code><span class="c"># environment variables</span>
-OTEL_EXPORTER_OTLP_ENDPOINT=<span class="s">"&lt;endpoint&gt;"</span>
-OTEL_EXPORTER_OTLP_HEADERS=<span class="s">"Authorization=Bearer &lt;ingest-key&gt;"</span>
-OTEL_SERVICE_NAME=<span class="s">"my-service"</span></code></pre>
-          <p class="code-note">{t.how.codeNote}</p>
-          <p class="agent">{t.how.agentNote}</p>
-          <figure class="how-shot shot">
-            <div class="chrome"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">app.lumost.id / setup</span><span class="live"><i aria-hidden="true"></i>live</span></div>
-            <Image src={setup} alt={t.how.shotAlt} width={1200} loading="lazy" />
-          </figure>
-        </div>
-      </div>
+    <div class="two rv" style="grid-template-columns:1fr">
+      <div class="card"><div class="body">
+        <h3>Ke mana data Anda pergi</h3>
+        <div class="flow"><span class="node">Aplikasi · Jakarta</span><span class="edge cross"></span><span class="node off">Vendor global</span></div>
+        <p class="cap">Vendor global (US, EU, Jepang): transfer lintas negara, butuh instrumen hukum.</p>
+        <div class="flow" style="margin-top:24px"><span class="node">Aplikasi · Jakarta</span><span class="edge home"></span><span class="node vio">Lumost · id-jkt-1</span></div>
+        <p class="cap">Lumost: tidak ada transfer ke luar negeri.</p>
+      </div></div>
     </div>
-  </section>
 
-  <section class="band" id="perbandingan">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">{t.compare.kicker}</p>
-        <div>
-          <h2 class="title">{t.compare.title}</h2>
-          <p class="lede">{t.compare.lede}</p>
+    <div class="grid3 rv">
+      <div class="item"><h3>Di Indonesia</h3><p>Dihosting di Dalang.io Banten 2 (Jakarta dan Pandeglang), data hot maupun cold. Tidak ada transfer ke luar negeri.</p></div>
+      <div class="item"><h3>DPA ditandatangani</h3><p>Perjanjian pemrosesan data ditandatangani bersama kontrak. Tim legal Anda boleh memeriksanya lebih dulu.</p></div>
+      <div class="item"><h3>Akses tercatat</h3><p>Akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi mana, per sesi.</p></div>
+      <div class="item"><h3>Standar terbuka</h3><p>OpenTelemetry masuk, PromQL keluar, ekspor OTLP kapan pun. Pindah nanti tidak perlu menulis ulang kode aplikasi.</p></div>
+    </div>
+    <p class="src rv" style="max-width:80ch">Data di Indonesia menyederhanakan kepatuhan transfer lintas negara (Pasal 56 UU PDP), tetapi tidak dengan sendirinya memenuhi seluruh kewajiban UU PDP. Kewajiban sebagai pengendali data tetap di Anda.</p>
+  </div>
+</section>
+
+<!-- CARA KERJA -->
+<section id="cara-kerja" aria-labelledby="h-cara">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">05 · Cara kerja</span>
+      <h2 id="h-cara">Dari daftar sampai trace pertama dalam beberapa menit</h2>
+      <p class="lead">Semuanya bisa Anda kerjakan sendiri, dan kami siap menemani kalau macet di langkah ketiga.</p>
+    </div>
+    <ol class="steps rv">
+      <li><h3>Daftar dan pilih yang dipantau</h3><p>Aplikasi (APM), host, atau Kubernetes. Mulai dari yang paling Anda butuhkan.</p></li>
+      <li><h3>Buat kunci ingest</h3><p>Satu kunci per organisasi, ditampilkan sekali, bisa dicabut kapan saja.</p></li>
+      <li><h3>Arahkan SDK atau collector</h3><p>OpenTelemetry apa pun, bahasa apa pun. Instrumentasi yang ada tidak perlu diganti.</p></li>
+      <li><h3>Trace pertama masuk</h3><p>Sekitar sepuluh menit. Biasanya sebelum layar onboarding selesai.</p></li>
+    </ol>
+    <div class="two rv">
+      <div class="card glow">
+        <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.lumost.id / setup</span><span class="live">contoh</span></div>
+        <div class="body">
+          <h3 style="margin-bottom:14px">Yang berubah di repo Anda</h3>
+<pre class="code"><span class="c"># environment variables</span>
+<span class="k">OTEL_EXPORTER_OTLP_ENDPOINT</span>=<span class="s">"&lt;endpoint&gt;"</span>
+<span class="k">OTEL_EXPORTER_OTLP_HEADERS</span>=<span class="s">"Authorization=Bearer &lt;ingest-key&gt;"</span>
+<span class="k">OTEL_SERVICE_NAME</span>=<span class="s">"my-service"</span></pre>
+          <p class="m" style="margin-top:16px;font-size:16px">Tiga variabel lingkungan. Endpoint dan kunci tampil di layar Setup setelah mendaftar.</p>
         </div>
       </div>
-      <div class="compare" role="region" aria-label={t.compare.kicker} tabindex="0">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">{t.compare.aspect}</th>
-              {t.compare.columns.map((c, i) => <th scope="col" class={i === 0 ? 'is-lumost' : ''}>{c}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {t.compare.rows.map((row) => (
-              <tr>
-                <th scope="row">{row.label}</th>
-                {row.values.map((v, i) => <td class={i === 0 ? 'is-lumost' : ''} data-label={t.compare.columns[i]}>{v}</td>)}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="src">{t.compare.note}</p>
+      <div class="card glow">
+        <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">prasyarat</span><span class="live">minimal</span></div>
+        <div class="body">
+        <h3 style="margin-bottom:14px">Yang tidak perlu Anda siapkan</h3>
+        <ul class="tick">
+          <li><span><b style="color:#fff">Agen per host.</b> Untuk aplikasi cukup collector atau SDK. Untuk metric server dan Kubernetes tersedia agent lewat menu Tambah data.</span></li>
+          <li><span><b style="color:#fff">ClickHouse sendiri.</b> Penyimpanan kami yang urus.</span></li>
+          <li><span><b style="color:#fff">Akses ke klaster Anda.</b> Kami hanya melihat data yang Anda kirim ke endpoint kami.</span></li>
+        </ul>
+      </div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="band wash" id="partner">
-    <div class="wrap partner">
+<!-- PARTNER -->
+<section id="partner" aria-labelledby="h-partner">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">06 · Design partner</span>
+      <h2 id="h-partner">Kami membuka akses untuk beberapa tim pertama</h2>
+      <p class="lead">Gratis 90 hari, tanpa kartu kredit. Detail programnya kami sampaikan saat demo.</p>
+      <div class="cta" style="margin-top:24px"><a class="btn p" href="#kontak">Saya tertarik</a></div>
+    </div>
+    <div class="grid3 c3 rv">
+      <div class="item"><h3>Gratis 90 hari</h3><p>Semua fitur, tanpa kartu kredit.</p></div>
+      <div class="item"><h3>Langsung ke engineer</h3><p>Satu kanal dengan orang yang menulis kodenya.</p></div>
+      <div class="item"><h3>Ikut menentukan roadmap</h3><p>Masukan Anda menentukan apa yang dikerjakan lebih dulu.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" aria-labelledby="h-faq">
+  <div class="wrap narrow">
+    <div class="head rv center">
+      <span class="eyebrow">07 · FAQ</span>
+      <h2 id="h-faq">Pertanyaan yang biasanya datang dari tim legal dan infra</h2>
+    </div>
+    <div class="faq rv">
+      <details name="faq"><summary>Kami sudah memakai Datadog atau Grafana. Apakah harus pindah?</summary><p>Tidak. Lumost boleh dipakai berdampingan. Instrumentasinya OpenTelemetry standar, sehingga pindah (atau kembali) tidak perlu menulis ulang kode aplikasi.</p></details>
+      <details name="faq"><summary>Apa yang perlu dipasang di sistem kami?</summary><p>Untuk aplikasi, tiga variabel lingkungan dan SDK atau collector OpenTelemetry yang Anda punya, tanpa agen per host. Untuk metric server dan Kubernetes tersedia agent lewat menu Tambah data. Kami tidak meminta akses ke klaster Anda.</p></details>
+      <details name="faq"><summary>Siapa yang bisa melihat data kami?</summary><p>Akses ke data pelanggan hanya lewat jalur yang tercatat: siapa, kapan, organisasi mana, per sesi.</p></details>
+      <details name="faq"><summary>Apakah memakai Lumost otomatis membuat kami patuh UU PDP?</summary><p>Tidak otomatis. Data yang tidak keluar dari Indonesia menyederhanakan persyaratan transfer lintas negara (Pasal 56), tetapi kewajiban lain sebagai pengendali data tetap di Anda. Perjanjian pemrosesan data ditandatangani bersama kontrak.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak" aria-labelledby="h-kontak" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-box rv">
       <div>
-        <p class="kicker">{t.partner.kicker}</p>
-        <h2 class="title">{t.partner.title}</h2>
-        <p class="lede">{t.partner.lede}</p>
-        <a class="btn solid" href="#kontak">{t.partner.cta}</a>
-      </div>
-      <ul class="ticks">{t.partner.points.map((p) => <li>{p}</li>)}</ul>
-    </div>
-  </section>
-
-  <section class="band dark" id="kontak">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">{t.contact.kicker}</p>
-        <div><h2 class="title">{t.contact.title}</h2></div>
-      </div>
-      <div class="contact-grid">
-        <div>
-          <p class="lede" style="margin-top:0">{t.contact.lede}</p>
-          <div class="person">
-            <p class="name">{site.founder.name}</p>
-            <p class="role">{t.contact.personRole}</p>
-            <p class="line"><a href={`mailto:${site.founder.email}`}>{site.founder.email}</a></p>
-            <p class="line"><a href={wa}>{site.whatsapp.display}</a></p>
-            <p class="reply">{t.contact.reply}</p>
-            <a class="btn wa-btn" href={wa}>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d={waPath} /></svg>{t.contact.waLabel}
-            </a>
-          </div>
+        <span class="eyebrow">08 · Hubungi kami</span>
+        <h2 id="h-kontak">Ceritakan sistem Anda, kami tunjukkan produknya</h2>
+        <p class="lead" style="margin-top:16px">Panggilan 30 menit di data demo, tanpa slide dan tanpa kewajiban.</p>
+        <div class="person"><span class="av" aria-hidden="true">MH</span><div><p class="pn"><b>{site.founder.name}</b><span class="fr">Founder</span><a href={mail}>{site.founder.email}</a></p><span><i class="pdot" aria-hidden="true"></i>Biasanya membalas di hari kerja yang sama (WIB)</span></div></div>
+        <div class="reach">
+          <a class="rc wa" href={wa}><span class="k">WhatsApp</span><b>{site.whatsapp.display}</b><span class="go">Chat sekarang</span></a>
         </div>
-        <ContactForm t={t} />
       </div>
+      <ContactForm t={t} />
     </div>
-  </section>
+  </div>
+</section>
 </main>
 
-<footer class="site-footer">
+<div class="float" id="float" aria-label="Hubungi kami"><a class="btn wa" href={wa}>WhatsApp</a><a class="btn p" href="#kontak">Minta demo</a></div>
+
+<footer>
   <div class="wrap">
-    <a class="brand" href="#top"><img src="/logo-mark.svg" alt="" width="24" height="24" />Lumost</a>
-    <span class="tag">{t.footer.tag}</span>
-    <span>lumost.id · {t.footer.rights}</span>
+    <div style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true" width="22" height="22"><path d="M25.09 20.63A10.2 10.2 0 0 0 8.48 9.11A10.2 10.2 0 0 0 21.41 24.65" stroke="#14b8a6" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="16" r="4.6" fill="#bda3ea"/></svg><b style="color:#fff">Lumost</b> · Every signal, brought to light.</div>
+    <div><a href={mail} style="color:#fff">{site.founder.email}</a> · <a href={wa} style="color:#fff">WhatsApp {site.whatsapp.display}</a> · lumost.id · Dibuat di Indonesia.</div>
   </div>
 </footer>
-
 <script>
-  const days = document.querySelector('[data-days]');
-  const clock = document.querySelectorAll('[data-cd]');
-  if (days || clock.length) {
-    const target = new Date('2027-01-16T00:00:00+07:00').getTime();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    const update = () => {
-      const ms = Math.max(0, target - Date.now());
-      if (days) days.textContent = String(Math.floor(ms / 86400000));
-      if (clock.length) {
-        const parts = [Math.floor(ms / 86400000), Math.floor(ms / 3600000) % 24, Math.floor(ms / 60000) % 60, Math.floor(ms / 1000) % 60];
-        clock.forEach((el, i) => { el.textContent = pad(parts[i]); });
-      }
-    };
-    update();
-    const timer = window.setInterval(update, clock.length ? 1000 : 3_600_000);
-    document.addEventListener('visibilitychange', update);
-    window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
-  }
+  import '../scripts/landing.js';
 </script>
