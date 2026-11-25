@@ -6,7 +6,7 @@ import ContactForm from './ContactForm.astro';
 interface Props { t: Dict }
 const { t } = Astro.props;
 
-const wa = waLink('Halo, saya [nama] dari [perusahaan]. Saya tertarik dengan Lumost dan ingin minta demo 30 menit.');
+const wa = waLink('Halo, saya [nama] dari [perusahaan]. Saya tertarik dengan Lumost dan ingin minta demo.');
 const mail = `mailto:${site.founder.email}`;
 ---
 <a class="skip" href="#main">Lewati ke konten</a>
@@ -37,7 +37,7 @@ const mail = `mailto:${site.founder.email}`;
     <h1 id="h-hero">Observability dalam satu dashboard. <em>Data di Indonesia.</em></h1>
     <p class="lead">Trace, metric, log, dan service map dalam satu konsol. Tagihan per host dalam rupiah, tanpa biaya per span.</p>
     <div class="cta">
-      <a class="btn p" href="#kontak">Minta demo 30 menit</a>
+      <a class="btn p" href="#kontak">Minta demo</a>
       <a class="btn s" href="#produk">Lihat produknya</a>
     </div>
     <div class="hcount" role="timer" aria-label="Hitung mundur menuju 16 Januari 2027, penegakan PP 33/2026">
@@ -352,7 +352,7 @@ const mail = `mailto:${site.founder.email}`;
       <div>
         <span class="eyebrow">08 · Hubungi kami</span>
         <h2 id="h-kontak">Ceritakan sistem Anda, kami tunjukkan produknya</h2>
-        <p class="lead" style="margin-top:16px">Panggilan 30 menit di data demo, tanpa slide dan tanpa kewajiban.</p>
+        <p class="lead" style="margin-top:16px">Demo langsung di data contoh, tanpa slide dan tanpa kewajiban.</p>
         <div class="person"><span class="av" aria-hidden="true">MH</span><div><p class="pn"><b>{site.founder.name}</b><span class="fr">Founder</span><a href={mail}>{site.founder.email}</a></p><span><i class="pdot" aria-hidden="true"></i>Biasanya membalas di hari kerja yang sama (WIB)</span></div></div>
         <div class="reach">
           <a class="rc wa" href={wa}><span class="k">WhatsApp</span><b>{site.whatsapp.display}</b><span class="go">Chat sekarang</span></a>
