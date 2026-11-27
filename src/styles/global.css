@@ -182,7 +182,8 @@ section{padding:clamp(52px,7vw,92px) 0;position:relative}
 .count div{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 6px;text-align:center;background:rgba(255,255,255,.02)}
 .count b{display:block;font:600 clamp(24px,5vw,40px) var(--font);letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--acc)}
 .count span{font:12px var(--mono);color:var(--dim)}
-.flow{display:flex;align-items:center;gap:10px;font:13px var(--mono);margin:20px 0 10px;flex-wrap:wrap}
+.flow{display:flex;align-items:center;gap:10px;font:13px var(--mono);margin:20px 0 10px;flex-wrap:nowrap}
+@media(max-width:480px){.flow{gap:8px;font-size:12px}.flow .node{padding:8px 10px;white-space:nowrap}}
 .flow .node{flex:none}
 .flow .edge{flex:1;min-width:30px;position:relative}
 .flow .edge.cross{background:repeating-linear-gradient(90deg,var(--bad) 0 6px,transparent 6px 12px)}
